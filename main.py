@@ -3,9 +3,9 @@ from twikit import Client
 import json
 
 # Constants (fill with your credentials and parameters)
-USERNAME = 'absnt_team'
-EMAIL = 'absnt.project@gmail.com'
-PASSWORD = 'P0l1t3cn1c4.b1s'
+USERNAME = '...'
+EMAIL = '...@gmail.com'
+PASSWORD = '...'
 QUERY = "amlo"
 INCREMENT_COUNT = 20
 WAITTIME = 5

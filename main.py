@@ -3,12 +3,12 @@ from twikit import Client
 import json
 
 # Constants (fill with your credentials and parameters)
-USERNAME = '...'
-EMAIL = '...@gmail.com'
-PASSWORD = '...'
+USERNAME = 'absnt_team'
+EMAIL = 'absnt.project@gmail.com'
+PASSWORD = 'P0l1t3cn1c4.b1s'
 QUERY = "amlo"
-INCREMENT_COUNT = 20
-WAITTIME = 5
+INCREMENT_COUNT = 1
+WAITTIME = 30
 
 # Initialize the Twikit client
 client = Client('en-US')
@@ -21,7 +21,7 @@ async def scrape_tweets(queue):
 
     # Initial search
     tweets = await client.search_tweet(query=QUERY, product='Top', count=INCREMENT_COUNT)
-    scraped = 20
+    scraped = INCREMENT_COUNT
 
     while True:
         print(f"Scraped {scraped} tweets")
@@ -30,7 +30,7 @@ async def scrape_tweets(queue):
             await queue.put(tweet)
         # Fetch the next set of tweets
         tweets = await tweets.next()
-        scraped += 20
+        scraped += INCREMENT_COUNT
         await asyncio.sleep(WAITTIME)  # Non-blocking sleep
 
 # Consumer function to process tweets from the queue
@@ -39,14 +39,19 @@ async def process_tweets(queue):
         tweet = await queue.get()  # Wait for a tweet to be available in the queue
         # Process tweet (store or handle in real-time)
         tweet_data = {
+            "tweetUser": tweet.user.id,
+            "tweetUserFollowers": tweet.user.followers_count,
+            "tweetUserWithheldCountries": tweet.user.withheld_in_countries,
             "tweetId": tweet.id,
+            "tweetHashtags": tweet.hashtags,
             "tweetTimestamp": tweet.created_at,
             "tweetFavoriteCount": tweet.favorite_count,
             "tweetRetweetCount": tweet.retweet_count,
             "tweetReplyCount": tweet.reply_count,
             "tweetQuoteCount": tweet.quote_count,
             "tweetViewCount": tweet.view_count,
-            "tweetText": tweet.text
+            "tweetText": tweet.text,
+            "tweetLocation" : tweet.place
         }
         # Append tweet data to JSON file (ensuring proper structure)
         with open(f'{QUERY}_tweets.json', 'a', encoding="UTF-8") as f:

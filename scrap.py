@@ -14,15 +14,15 @@ from twikit import Client
 import time
 
 # constants
-USERNAME = '...'
-EMAIL = '...'
-PASSWORD = '...'
+USERNAME = ''
+EMAIL = ''
+PASSWORD = ''
 # CHANGE QUERY TO WHATEVER YOU WANT
-QUERY = "taylor swift"
+QUERY = "amlo"
 # CHANGE INCREMENT_COUNT TO WHATEVER YOU WANT, MAX 20!!!
 INCREMENT_COUNT = 20
 # CHANGE SLEEPTIME TO WHATEVER YOU WANT, THAT IS THE UPDATE TIME OF THE SCRAP
-WAITTIME = 5
+WAITTIME = 0.3
 
 # IDK IF THERE ARE OTHER CLIENTS THIS WORKS
 client = Client('en-US')
@@ -58,16 +58,21 @@ async def main():
         time.sleep(WAITTIME)
         with open(f'{QUERY}_tweets.json', 'a',encoding="UTF-8") as f:
             for tweet in tweets:
-                f.write(str('{\n'+
-                        f'"tweetId": "{tweet.id}",\n'+
-                        f'"tweetTimestamp": "{tweet.created_at}",\n'+
-                        f'"tweetFavoriteCount": "{tweet.favorite_count}",\n'+
-                        f'"tweetRetweetCount": "{tweet.retweet_count}",\n'+
-                        f'"tweetReplyCount": "{tweet.reply_count}",\n'+
-                        f'"tweetQuoteCount": "{tweet.quote_count}",\n'+
-                        f'"tweetViewCount": "{tweet.view_count}",\n'+
-                        f'"tweetText": "{tweet.text}",\n'+
-                        '},\n'))
+                f.write(str({
+            "tweetUser": tweet.user.id,
+            "tweetUserFollowers": tweet.user.followers_count,
+            "tweetUserWithheldCountries": tweet.user.withheld_in_countries,
+            "tweetId": tweet.id,
+            "tweetHashtags": tweet.hashtags,
+            "tweetTimestamp": tweet.created_at,
+            "tweetFavoriteCount": tweet.favorite_count,
+            "tweetRetweetCount": tweet.retweet_count,
+            "tweetReplyCount": tweet.reply_count,
+            "tweetQuoteCount": tweet.quote_count,
+            "tweetViewCount": tweet.view_count,
+            "tweetText": tweet.text,
+            "tweetLocation" : tweet.place
+        })+"\n")
         tweets = await tweets.next()
         scraped += 20
 

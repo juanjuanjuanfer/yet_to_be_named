@@ -3,12 +3,12 @@ from twikit import Client
 import json
 
 # Constants (fill with your credentials and parameters)
-USERNAME = 'absnt_team'
-EMAIL = 'absnt.project@gmail.com'
-PASSWORD = 'P0l1t3cn1c4.b1s'
+USERNAME = ''
+EMAIL = ''
+PASSWORD = ''
 QUERY = "amlo"
-INCREMENT_COUNT = 1
-WAITTIME = 30
+INCREMENT_COUNT = 20
+WAITTIME = 1
 
 # Initialize the Twikit client
 client = Client('en-US')
@@ -20,7 +20,7 @@ async def scrape_tweets(queue):
     print('Searching for tweets...')
 
     # Initial search
-    tweets = await client.search_tweet(query=QUERY, product='Top', count=INCREMENT_COUNT)
+    tweets = await client.search_tweet(query=QUERY, product='Latest', count=INCREMENT_COUNT)
     scraped = INCREMENT_COUNT
 
     while True:

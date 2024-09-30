@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scraping Status</title>
+    <script>
+        // Function to poll the server for the status of the scrape task
+        function checkStatus() {
+            fetch('/scrape_status')
+                .then(response => response.json())
+                .then(data => {
+                    const statusElement = document.getElementById('status');
+                    if (data.status === 'finished') {
+                        statusElement.innerHTML = 'Scraping finished!';
+                        // Redirect to the dashboard or another page
+                        window.location.href = '/dashboard';
+                    } else if (data.status === 'in progress') {
+                        statusElement.innerHTML = 'Scraping in progress...';
+                    } else {
+                        statusElement.innerHTML = 'Scraping not started or failed.';
+                    }
+                });
+        }
+
+        // Poll every 3 seconds
+        setInterval(checkStatus, 3000);
+    </script>
+</head>
+<body>
+    <button onclick="window.location.href='/dashboard'">Go to Dashboard</button>
+    <button onclick="window.location.href='/'">Go Home</button>
+    <h1>Scraping Status</h1>
+    <p id="status">Waiting for the task to start...</p>
+
+</body>
+</html>

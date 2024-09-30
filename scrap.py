@@ -12,13 +12,17 @@ import asyncio
 # python -m pip install https://github.com/d60/twikit/archive/login_fix.zip
 from twikit import Client
 import time
+import json
 
 # constants
-USERNAME = ''
-EMAIL = ''
+USERNAME = 'absnt_team'
+EMAIL = 'absnt.project@gmail.com'
 PASSWORD = ''
+
 # CHANGE QUERY TO WHATEVER YOU WANT
 QUERY = "amlo"
+FLAG = 520
+TYPE = "Top"
 # CHANGE INCREMENT_COUNT TO WHATEVER YOU WANT, MAX 20!!!
 INCREMENT_COUNT = 20
 # CHANGE SLEEPTIME TO WHATEVER YOU WANT, THAT IS THE UPDATE TIME OF THE SCRAP
@@ -46,7 +50,7 @@ async def main():
 
     # search for FIRST tweets, NECESSARY TO BE OUTSIDE LOOP also await necessary, set count to whatever you want
     # default is 20, also max is 20
-    tweets =  await client.search_tweet(query=QUERY, product='Latest', count=INCREMENT_COUNT)
+    tweets =  await client.search_tweet(query=QUERY, product='Top', count=INCREMENT_COUNT)
     
     # THIS PRINT IS FOR TESTING PURPOSES
     #[print(tweet.id) for tweet in tweets]
@@ -55,26 +59,35 @@ async def main():
     # LOOP TO KEEP SEARCHING FOR TWEETS, CHANGE THE SLEEP TIME TO WHATEVER YOU WANT
     while True:
         print(f"Scraped {scraped} tweets")
-        time.sleep(WAITTIME)
-        with open(f'{QUERY}_tweets.json', 'a',encoding="UTF-8") as f:
+        
+        # Append tweets to JSON file
+        with open(f'{QUERY}_{TYPE}_tweets.json', 'a', encoding="UTF-8") as f:
             for tweet in tweets:
-                f.write(str({
-            "tweetUser": tweet.user.id,
-            "tweetUserFollowers": tweet.user.followers_count,
-            "tweetUserWithheldCountries": tweet.user.withheld_in_countries,
-            "tweetId": tweet.id,
-            "tweetHashtags": tweet.hashtags,
-            "tweetTimestamp": tweet.created_at,
-            "tweetFavoriteCount": tweet.favorite_count,
-            "tweetRetweetCount": tweet.retweet_count,
-            "tweetReplyCount": tweet.reply_count,
-            "tweetQuoteCount": tweet.quote_count,
-            "tweetViewCount": tweet.view_count,
-            "tweetText": tweet.text,
-            "tweetLocation" : tweet.place
-        })+"\n")
+                tweet_data = {
+                    "tweetUser": tweet.user.id,
+                    "tweetUserFollowers": tweet.user.followers_count,
+                    "tweetUserWithheldCountries": tweet.user.withheld_in_countries,
+                    "tweetId": tweet.id,
+                    "tweetHashtags": tweet.hashtags,
+                    "tweetTimestamp": tweet.created_at,
+                    "tweetFavoriteCount": tweet.favorite_count,
+                    "tweetRetweetCount": tweet.retweet_count,
+                    "tweetReplyCount": tweet.reply_count,
+                    "tweetQuoteCount": tweet.quote_count,
+                    "tweetViewCount": tweet.view_count,
+                    "tweetText": tweet.text,
+                    "tweetLocation": tweet.place if tweet.place else "None"
+                }
+                # Dump each tweet as a separate JSON object
+                json.dump(tweet_data, f, ensure_ascii=False)
+                f.write('\n')  # Newline for each tweet for clarity
+
         tweets = await tweets.next()
-        scraped += 20
+        scraped += INCREMENT_COUNT
+        time.sleep(WAITTIME)
+
+        if scraped == FLAG:
+            break
 
         # THIS PRINT IS FOR TESTING PURPOSES
         #[print(tweet.id) for tweet in tweets]

@@ -3,8 +3,8 @@ from twikit import Client
 import json
 
 # Constants (fill with your credentials and parameters)
-USERNAME = ''
-EMAIL = ''
+USERNAME = 'absnt_team'
+EMAIL = 'absnt.project@gmail.com'
 PASSWORD = ''
 QUERY = "amlo"
 INCREMENT_COUNT = 20

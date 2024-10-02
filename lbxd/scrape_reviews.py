@@ -2,7 +2,7 @@ import film as scraper
 import connection_mongo as mongo
 import time
 
-client= mongo.connect_to_mongo("juan", "lokura22")
+client= mongo.connect_to_mongo("", "")
 db = client.get_database("Letterboxd")
 collection = db["reviews_the-substance"]
 

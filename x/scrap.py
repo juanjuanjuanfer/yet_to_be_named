@@ -17,11 +17,11 @@ import json
 # constants
 USERNAME = 'absnt_team'
 EMAIL = 'absnt.project@gmail.com'
-PASSWORD = ''
+PASSWORD = 'P0l1t3cn1c4.b1s'
 
 # CHANGE QUERY TO WHATEVER YOU WANT
-QUERY = "amlo"
-FLAG = 520
+QUERY = "adrian marcelo"
+FLAG = 40
 TYPE = "Top"
 # CHANGE INCREMENT_COUNT TO WHATEVER YOU WANT, MAX 20!!!
 INCREMENT_COUNT = 20

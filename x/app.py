@@ -4,8 +4,8 @@ from flask_session import Session
 import asyncio
 import threading
 
-MONGOUSERNAME = ""
-MONGOPASSWORD = ""
+MONGOUSERNAME = "juan"
+MONGOPASSWORD = "lokura22"
 MONGODB = "x_app"
 
 app = Flask(__name__)

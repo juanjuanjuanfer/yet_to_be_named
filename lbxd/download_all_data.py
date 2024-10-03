@@ -1,11 +1,12 @@
 import connection_mongo
 
 
-client = connection_mongo.connect_to_mongo('juan', 'lokura22')
+client = connection_mongo.connect_to_mongo('-', '-')
 db = client["Letterboxd"]
-collection = db["reviews_the-substance"]
+source_collection = db["reviews_the-substance"]
+target_collection = db["the-substance"]
 
-# get all data and store in a txt
-with open('the-substance.txt', 'w', encoding='utf-8') as f:
-    for doc in collection.find():
-        f.write(str(doc) + '\n')
+# Copy all documents
+documents = list(source_collection.find({}))  # Fetch all documents
+if documents:
+    target_collection.insert_many(documents)  # Insert them into the target collectio   n

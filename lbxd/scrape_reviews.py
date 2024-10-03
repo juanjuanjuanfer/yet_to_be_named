@@ -2,17 +2,21 @@ import film as scraper
 import connection_mongo as mongo
 import time
 
-client= mongo.connect_to_mongo("", "")
+client= mongo.connect_to_mongo("-", "-")
 db = client.get_database("Letterboxd")
-collection = db["reviews_the-substance"]
+moviename = "beetlejuice-beetlejuice"
+collection = db[moviename]
+
+# number of pages to scrape
+n = 1
 
 while True:
     print("Scraping reviews...")
     movie = scraper.Film()
-    movie.set_film_name("the-substance")
+    movie.set_film_name(moviename)
 
     reviews = scraper.Film.FilmReview(movie.filmName)
-    reviews.get_film_reviews(1)
+    reviews.get_film_reviews(n)
     data = reviews.filmReviews
 
 
@@ -24,5 +28,5 @@ while True:
         else:
             print(f"Review with ID {review['review_id']} already exists in the database.")
     
-    print("Waiting for 30 seconds before the next iteration...")
+    print(f"Waiting for {n} seconds before the next iteration...")
     time.sleep(1)

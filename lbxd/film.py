@@ -1,9 +1,6 @@
 from bs4 import BeautifulSoup
 from requests import get as requests_get, exceptions as requests_exceptions
-from re import findall, compile, DOTALL, search
-from concurrent.futures import ThreadPoolExecutor, as_completed
-from itertools import chain
-
+from re import findall, compile, search
 
 class Film:
 

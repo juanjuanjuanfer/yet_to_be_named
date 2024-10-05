@@ -71,7 +71,7 @@ page_css = """
 st.markdown(page_css, unsafe_allow_html=True)
 
 # Establish MongoDB connection
-client = connection_mongo.connect_to_mongo("-", "-")
+client = connection_mongo.connect_to_mongo("juan", "lokura22")
 db = client.get_database("Letterboxd")
 
 # Initialize session state

@@ -158,25 +158,5 @@ def get_sov(result):
     result.groupby(['date', 'Sentiment']).size().unstack().plot(kind='bar', stacked=True, ax=ax)
     return fig
 
-def save_feedback(sentiment, sentiment_mapping):
-    client = login()
-    collection = client["Letterboxd"]["feedback"]
-    collection.insert_one({"sentiment": sentiment_mapping[sentiment]})
-
-def upload_pic_to_mongo(picture):
-    client = login()
-    collection = client["Letterboxd"]["pictures"]
-    # transform to binary
-    picture_binary = picture.getvalue()
-    collection.insert_one({"picture": picture_binary})
-    
-def get_pic_from_mongo():
-    client = login()
-    collection = client["Letterboxd"]["pictures"]
-    # find last 5 pictures
-    pictures = collection.find().sort("date", -1).limit(5)
-    # transform binary to image
-    return [picture["picture"] for picture in pictures]
-
 
 

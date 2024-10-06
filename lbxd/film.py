@@ -22,6 +22,7 @@ class Film:
         self.filmMainSoup: BeautifulSoup = None
         self.filmAverageRating: int = 0
         self.filmAverageRatingOver5: int = 0
+        self.filmTrailerLink = ""
 
 
     def __str__(self) -> str:
@@ -59,10 +60,19 @@ class Film:
 
         self.filmPoster = Film.scrape_film_poster(soup=self.filmMainSoup, film_name=self.filmName)
 
+        self.filmRealName = Film.scrape_film_real_name(soup=self.filmMainSoup)
+
     def get_film_stats(self) -> None:
 
         self.filmStats = Film.scrape_film_stats(film_name=self.filmName)
 
+    def get_film_genres(self) -> None:
+
+        self.filmGenres = Film.scrape_film_genres(film_name=self.filmName)
+
+    def get_film_trailer(self) -> None:
+
+        self.filmTrailerLink = Film.scrape_trailer_link(soup=self.filmMainSoup)
 
     @staticmethod
     def scrape_film_stats(film_name:str) -> dict:
@@ -86,6 +96,12 @@ class Film:
     def scrape_film_release_year(soup:BeautifulSoup) -> int:
         release_year = soup.find('div', class_="releaseyear")
         return int(release_year.find('a')['href'].split('/')[-2])
+    
+    @staticmethod
+    def scrape_film_real_name(soup:BeautifulSoup) -> str:
+        real_name = soup.find('span', class_="name js-widont prettify")
+        return real_name.text
+
     @staticmethod
     def scrape_film_directors(soup:BeautifulSoup) -> list:
         directors = soup.find('span', class_="directorlist")
@@ -127,13 +143,16 @@ class Film:
         # Extract the data-film-id attribute
         if film_poster_div and 'data-film-id' in film_poster_div.attrs:
             film_id = film_poster_div['data-film-id']
-        # template https://a.ltrbxd.com/resized/film-poster/8/3/8/1/4/0/838140-the-substance-0-1000-0-1500-crop.jpg
-        # split the id into a list
-        split_id = list(film_id)
-        # make a string like '8/3/8/1/4/0'
-        poster_path = '/'.join(split_id)
-        url = f'https://a.ltrbxd.com/resized/film-poster/{poster_path}/{film_id}-{film_name}-0-1000-0-1500-crop.jpg'
-        return url
+            # template https://a.ltrbxd.com/resized/film-poster/8/3/8/1/4/0/838140-the-substance-0-1000-0-1500-crop.jpg
+            # split the id into a list
+            split_id = list(film_id)
+            # make a string like '8/3/8/1/4/0'
+            poster_path = '/'.join(split_id)
+            url = f'https://a.ltrbxd.com/resized/film-poster/{poster_path}/{film_id}-{film_name}-0-1000-0-1500-crop.jpg'
+
+            return url
+        else:
+            return "https://s.ltrbxd.com/static/img/empty-poster-70.8112b435.png"
 
     class FilmReview:
         def __init__(self, filmName:str) -> None:
@@ -195,4 +214,31 @@ class Film:
 
         return reviews_list
     
+    @staticmethod
+    def scrape_film_genres(film_name):
+        response = requests_get(f'https://letterboxd.com/film/{film_name}/genres/')
+        soup = BeautifulSoup(response.text, 'html.parser')
+        genre_pattern = compile(r'/films/genre/[\w-]+/') 
+
+        # Find all 'a' tags with an href that matches the genre pattern
+        genres = soup.find_all('a', href=genre_pattern)
+        genres = [i.text for i in genres]
+        
+        return genres
+
+    @staticmethod
+    def scrape_trailer_link(soup):
+        # Find the 'a' tag with class 'play track-event js-video-zoom cboxElement' and data-track-category 'Trailer'
+# Find the 'p' tag containing the 'a' tag with the trailer link
+        trailer_paragraph = soup.find('p', class_='trailer-link js-watch-panel-trailer')
+
+        # Now, find the 'a' tag within this 'p' tag
+        if trailer_paragraph:
+            trailer_link = trailer_paragraph.find('a', class_='play track-event js-video-zoom')
+            if trailer_link:
+                youtube_url = trailer_link.get('href')
+                # Ensure the URL is complete
+                if youtube_url.startswith('//'):
+                    youtube_url = 'https:' + youtube_url
+                return youtube_url
 

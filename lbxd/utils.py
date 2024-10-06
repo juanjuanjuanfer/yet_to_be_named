@@ -6,11 +6,11 @@ from nltk.sentiment import SentimentIntensityAnalyzer
 
 def login():
     try:
-        path = "C:\\Users\\juanj\\Documents\\.credentials.txt"
-        with open(path, 'r') as file:
-            lines = file.readlines()
-            username = lines[0].strip()
-            password = lines[1].strip()
+        #use .streamlit/secrets.toml to store credentials
+        with open(".streamlit/secrets.toml", "r") as f:
+            contents = f.read()
+            username = re.search(r'username = "(.*)"', contents).group(1)
+            password = re.search(r'password = "(.*)"', contents).group(1)
     except:
         return "Error: Could not read credentials file or file does not exist."
     

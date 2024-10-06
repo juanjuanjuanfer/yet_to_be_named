@@ -3,6 +3,7 @@ import plotly.graph_objects
 import matplotlib.pyplot as plt
 import re
 from nltk.sentiment import SentimentIntensityAnalyzer
+from nltk import download
 
 def login():
     try:
@@ -158,5 +159,5 @@ def get_sov(result):
     result.groupby(['date', 'Sentiment']).size().unstack().plot(kind='bar', stacked=True, ax=ax)
     return fig
 
-
+download('vader_lexicon')
 

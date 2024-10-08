@@ -123,16 +123,28 @@ col1, col2 = st.columns([2, 1])
 
 with col1:
     st.markdown("### 🎬 Select Movie")
-    user_input = st.text_input('Enter the movie you want:', st.session_state['movie'])
+    st.markdown("Recommended to choose a movie with at least 500 reviews for better insights.")
+    # Get base movie names first
+    base_movies = db.list_collection_names()
+    # Create display names with review counts
+    movies_display = [movie + f" ({db[movie].count_documents({})} reviews)" for movie in base_movies]
+    # Create a dictionary to map display names back to base names
+    movie_map = dict(zip(movies_display, base_movies))
+    
+    # Use display names in selectbox
+    selected_movie_display = st.selectbox('🎥 Select a movie:', options=movies_display, index=0, key='movie_selector')
+    
+    # Get the actual movie name from our mapping
+    actual_movie_name = movie_map[selected_movie_display]
 
     if st.button('🔄 Update Selection'):
-        st.session_state['movie'] = user_input
+        st.session_state['movie'] = actual_movie_name
         st.markdown(f"""
             <div class="movie-card">
                 <h3>🎯 Selected Film: {st.session_state['movie']}</h3>
+                <h5> Total Reviews: {db[st.session_state['movie']].count_documents({})} </h5>
             </div>
         """, unsafe_allow_html=True)
-
 if st.session_state['movie']:
     collection = db[st.session_state['movie']]
     

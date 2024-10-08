@@ -123,6 +123,8 @@ col1, col2 = st.columns([2, 1])
 
 with col1:
     st.markdown("### 🎬 Search Movie")
+    st.markdown("Enter the movie you want to scrape and click the button to set the movie.")
+    st.markdown("The movie name should be the same as on Letterboxd and with Letterboxd's film slug format. e.g. 'the-substance' for movie 'The Substance'.")
     user_input = st.text_input('Enter the movie you want to scrape:', st.session_state['movie'])
     st.session_state['movie'] = user_input
 

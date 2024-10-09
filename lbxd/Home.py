@@ -159,7 +159,14 @@ p, span, div {
     border: 1px solid var(--border-color);
     border-radius: 6px;
 }
+.st-emotion-cache-s16by7 {
+    background-color: #0F172A !important;
+}
 
+.st-emotion-cache-s16by7:hover, 
+.st-emotion-cache-s16by7[aria-selected="true"] {
+    background-color: #10B981 !important;
+}
 /* Scrollbar styling */
 ::-webkit-scrollbar {
     width: 8px;

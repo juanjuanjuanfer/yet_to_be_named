@@ -156,6 +156,7 @@ h1, h2, h3, h4, h5, h6, p, span, div {
     border-radius: 8px;
 }
 
+
 /* Progress bars */
 div[data-testid="stProgressBar"] {
     border-radius: 8px;

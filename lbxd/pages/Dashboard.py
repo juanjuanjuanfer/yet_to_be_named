@@ -8,6 +8,10 @@ st.set_page_config(page_title="Letterboxd Film Tracker", page_icon="🎬", layou
 # Enhanced CSS with the movie tracker theme
 page_css = """
 <style>
+/* Set the background color */
+.main {
+        background-color: #1e1e1e;
+    }
 /* Base theme colors */
 :root {
     --primary-bg: #0F172A;
@@ -156,6 +160,23 @@ h1, h2, h3, h4, h5, h6, p, span, div {
     border: 1px solid var(--accent-blue);
     border-radius: 8px;
 }
+.st-emotion-cache-s16by7,
+li[role="option"].st-emotion-cache-s16by7 {
+    background-color: #0F172A !important;
+}
+
+.st-emotion-cache-s16by7:hover, 
+.st-emotion-cache-s16by7[aria-selected="true"],
+li[role="option"].st-emotion-cache-s16by7:hover,
+li[role="option"].st-emotion-cache-s16by7[aria-selected="true"] {
+    background-color: #10B981 !important;
+    color: white !important;
+}
+
+/* Ensure text is visible */
+.st-emotion-cache-sy3zga {
+    color: #F8FAFC !important;
+}   
 
 /* Progress bars */
 div[data-testid="stProgressBar"] {

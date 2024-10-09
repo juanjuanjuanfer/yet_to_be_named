@@ -13,82 +13,170 @@ db = client.get_database("Letterboxd")
 # Update the CSS to include better centering styles
 page_css = """
 <style>
+/* Base theme colors */
+:root {
+    --primary-bg: #0F172A;
+    --secondary-bg: #1E293B;
+    --accent-color: #38BDF8;
+    --text-primary: #F8FAFC;
+    --text-secondary: #CBD5E1;
+    --border-color: #334155;
+}
+
+/* Main layout elements */
 [data-testid="stHeader"] {
-    background-color: #0E1217;
-    color: #FFFFFF;
+    background-color: var(--primary-bg);
 }
 
 [data-testid="stMainBlockContainer"] {
-    background-color: #202830;
-    color: #FFFFFF;
-}
-
-[data-testid="stMain"] {
-    background-color: #202830;
+    background-color: var(--secondary-bg);
 }
 
 [data-testid="stSidebarContent"] {
-    background-color: #0E1217;
-    color: #FFFFFF;
+    background-color: var(--primary-bg);
+    border-right: 1px solid var(--border-color);
 }
 
-.gradient-text {
-    background: linear-gradient(
-        to right,
-        #FF8100 0%,
-        #FF8100 30%,
-        #00E153 35%,
-        #00E153 65%,
-        #3EBDF4 70%,
-        #3EBDF4 100%
-    );
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+}
+
+p, span, div {
+    color: var(--text-secondary);
+    font-family: 'Inter', sans-serif;
+}
+
+/* Title styling */
+.app-title {
+    background: linear-gradient(135deg, #38BDF8 0%, #818CF8 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-size: 2.5rem;
     text-align: center;
+    padding: 2rem 0;
+    font-weight: 700;
 }
 
+/* Cards and containers */
+.stat-card {
+    background-color: var(--primary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    transition: transform 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Metrics and KPIs */
+[data-testid="stMetricValue"] {
+    color: var(--accent-color) !important;
+    font-weight: 600;
+}
+
+[data-testid="stMetricDelta"] {
+    background-color: rgba(56, 189, 248, 0.1);
+    border-radius: 4px;
+    padding: 0.25rem 0.5rem;
+}
+
+/* Input elements */
+.stTextInput > div > div > input {
+    background-color: var(--primary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-primary);
+    padding: 0.75rem;
+}
+
+.stTextInput > div > div > input:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+}
+
+/* Buttons */
+.stButton > button {
+    background-color: #38BDF8;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.stButton > button:hover {
+    background-color: #0EA5E9;
+    transform: translateY(-1px) scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    transition: all 0.5s ease;
+}
+
+/* Movie grid */
+.movie-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem 0;
+}
+
+.movie-card {
+    background-color: var(--primary-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+}
+
+.movie-card:hover {
+    transform: translateY(-4px);
+}
+
+/* Centered content */
 .centered-content {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-}
-
-[data-testid="column"] {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-[data-testid="stImage"] {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
     text-align: center;
 }
 
-.stat-card {
-    background-color: #1A232C;
-    padding: 20px;
-    border-radius: 10px;
-    margin: 10px 0;
+/* Images */
+[data-testid="stImage"] {
+    border-radius: 8px;
+    overflow: hidden;
 }
 
-.action-button {
-    background-color: #FF8100;
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin: 5px;
+/* Select boxes */
+.stSelectbox > div > div {
+    background-color: var(--primary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
 }
-.stTextInput > div > div > input {
-    background-color: #FFFFFF;
-    color: #000000;
-    border: 1px solid #3EBDF4;
-    border-radius: 5px;
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--primary-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-color);
 }
 </style>
 """
@@ -102,7 +190,7 @@ with col2:
     st.markdown('<div style="display: flex; justify-content: center;">', unsafe_allow_html=True) # add image https://a.ltrbxd.com/logos/letterboxd-logo-v-neg-rgb.svg with markdown to center
     st.markdown('<div style="display: flex; justify-content: center;"><img src="https://a.ltrbxd.com/logos/letterboxd-logo-v-neg-rgb.svg" alt="Letterboxd Logo" style="width: 500px;">', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
-    st.markdown('<h1 class="gradient-text"><pre><pre>Letterboxd Film Tracker</h1>', unsafe_allow_html=True)
+    st.markdown('<h1 style="display: flex; justify-content: center;"><pre><pre>Letterboxd Film Tracker</h1>', unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
 # include video tutorial on how to use the app

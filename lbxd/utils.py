@@ -35,19 +35,19 @@ def get_gauge_plot(score:int, range_axis:int, title:str="Title") -> plotly.graph
         title = {'text': title},
         gauge = {'axis': {'range': [None, range_axis]},
                 'steps': [{'range': [0, range_axis], 'color': "#202830"}],
-                'bar' : {'color': "#00E054"},
-                'bgcolor': "#202830"
+                'bar' : {'color': "#38BDF8"},
+                'bgcolor': "#1E293B"
                 },
         
         ))
-    fig.update_layout(paper_bgcolor="#202830", font={'color': "white"})
+    fig.update_layout(paper_bgcolor="#1E293B", font={'color': "white"})
     return fig
 
 def get_vertical_bar_chart(count_ratings) -> plt.figure:
 
     fig, ax = plt.subplots()
         
-    ax.bar(count_ratings.index, count_ratings.values, color='#00E054', width=0.75)
+    ax.bar(count_ratings.index, count_ratings.values, color='#38BDF8', width=0.75)
 
     ax.grid(True, axis='y', color='gray', linestyle='--', linewidth=0.7)
     ax.grid(True, axis='x', color='gray', linestyle='--', linewidth=0.7, alpha=0)
@@ -58,8 +58,8 @@ def get_vertical_bar_chart(count_ratings) -> plt.figure:
     ax.set_title(f'Ratings', fontsize=15, color='white')
     
 
-    fig.patch.set_facecolor('#202830')  # Figure background
-    ax.set_facecolor('#202830')         # Axes background
+    fig.patch.set_facecolor('#1E293B')  # Figure background
+    ax.set_facecolor('#1E293B')         # Axes background
     
 
     ax.tick_params(axis='x', colors='white')
@@ -74,7 +74,7 @@ def get_vertical_bar_chart(count_ratings) -> plt.figure:
 def get_horizontal_bar_chart(ratings_3, counts) -> plt.figure:
 
     fig, ax = plt.subplots()
-    ax.barh(ratings_3, counts, color='#00E054')  # Set bar color to the desired green
+    ax.barh(ratings_3, counts, color='#38BDF8')  # Set bar color to the desired green
 
 
     ax.grid(True, axis='y', color='gray', linestyle='--', linewidth=0.7, alpha=0)
@@ -86,8 +86,8 @@ def get_horizontal_bar_chart(ratings_3, counts) -> plt.figure:
     ax.set_title('Ratings Distribution', color='white')
 
 
-    fig.patch.set_facecolor('#202830')  # Set figure background
-    ax.set_facecolor('#202830')         # Set axis background
+    fig.patch.set_facecolor('#1E293B')  # Set figure background
+    ax.set_facecolor('#1E293B')         # Set axis background
 
 
     ax.tick_params(axis='x', colors='white')
@@ -122,8 +122,8 @@ def get_sentiment_plot(sentiment_count, total) -> plt.figure:
 
 
     fig, ax = plt.subplots(figsize=(8, 6))
-    fig.patch.set_facecolor('#202830')  # Set figure background to dark
-    ax.set_facecolor('#202830')         # Set axes background to dark
+    fig.patch.set_facecolor('#1E293B')  # Set figure background to dark
+    ax.set_facecolor('#1E293B')         # Set axes background to dark
     ax.grid(True, axis='y', color='white', linestyle='--', linewidth=0.7)
 
     ax.bar(sentiment_count.index, sentiment_count.values, color=[custom_colors[x] for x in sentiment_count.index])

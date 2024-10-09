@@ -8,99 +8,226 @@ st.set_page_config(page_title="Letterboxd Film Tracker", page_icon="🎬", layou
 # Enhanced CSS with the movie tracker theme
 page_css = """
 <style>
-[data-testid="stHeader"] {
-    background-color: #0E1217;
-    color: #FFFFFF;
+/* Base theme colors */
+:root {
+    --primary-bg: #0F172A;
+    --secondary-bg: #1E293B;
+    --accent-orange: #F97316;
+    --accent-green: #10B981;
+    --accent-blue: #CBD5E1;
+    --text-primary: #F8FAFC;
+    --text-secondary: #CBD5E1;
+    --border-color: #334155;
+    --card-bg: #1E293B;
+    --hover-bg: #2D3B4F;
 }
 
-[data-testid="stMainBlockContainer"] {
-    background-color: #202830;
-    color: #FFFFFF;
+/* Main layout elements */
+[data-testid="stHeader"],
+[data-testid="stToolbar"] {
+    background-color: var(--primary-bg);
 }
 
+[data-testid="stMainBlockContainer"],
 [data-testid="stMain"] {
-    background-color: #202830;
-    color: #FFFFFF;
+    background-color: var(--secondary-bg);
+    color: var(--text-primary);
 }
 
 [data-testid="stSidebarContent"] {
-    background-color: #0E1217;
-    color: #FFFFFF;
+    background-color: var(--primary-bg);
+    border-right: 1px solid var(--border-color);
 }
 
+/* Typography */
+h1, h2, h3, h4, h5, h6, p, span, div {
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+}
+
+/* Gradient text effect */
 .gradient-text {
-    background: linear-gradient(
-        to right,
-        #FF8100 0%,
-        #FF8100 30%,
-        #00E153 35%,
-        #00E153 65%,
-        #3EBDF4 70%,
-        #3EBDF4 100%
-    );
+    background: #CBD5E1;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    display: inline-block;
+    font-weight: 700;
+    text-align: center;
+    padding: 1.5rem 0;
+    font-size: 2.5rem;
 }
 
+
+
+/* Input elements */
 .stTextInput > div > div > input {
-    background-color: #1A232C;
-    color: #FFFFFF;
-    border: 1px solid #3EBDF4;
-    border-radius: 5px;
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--accent-blue);
+    border-radius: 8px;
+    padding: 0.75rem;
+    transition: all 0.2s ease;
 }
 
+.stTextInput > div > div > input:focus {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+}
+
+/* Buttons */
 .stButton > button {
-    background: linear-gradient(
-        to right,
-        #FF8100,
-        #00E153
-    );
-    color: white;
+    background: #2D3B4F;
+    color: var(--text-primary);
     border: none;
-    border-radius: 5px;
-    padding: 0.5rem 2rem;
-    transition: transform 0.3s ease;
+    border-radius: 8px;
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .stButton > button:hover {
-    transform: scale(1.05);
+/* change color to whiteish blue */
+    transform: translateY(-2px) scale(1.02) translateZ(0) !important ; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    background: #0F172A;
 }
 
+/* Cards */
 .movie-card {
-    background-color: #1A232C;
+    background-color: var(--card-bg);
     padding: 2rem;
-    border-radius: 10px;
+    border-radius: 12px;
     margin: 1rem 0;
-    border: 1px solid #3EBDF4;
+    border: 1px solid var(--accent-blue);
+    transition: all 0.3s ease;
+}
+
+.movie-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(56, 189, 248, 0.1);
 }
 
 .stats-card {
-    background-color: #1A232C;
+    background-color: var(--card-bg);
     padding: 1.5rem;
-    border-radius: 10px;
-    margin: 0.5rem 0;
-    border: 1px solid #00E153;
+    border-radius: 12px;
+    margin: 1rem 0;
+    border: 1px solid var(--accent-green);
+    transition: all 0.3s ease;
 }
 
 .sentiment-card {
-    background-color: #1A232C;
+    background-color: var(--card-bg);
     padding: 1.5rem;
-    border-radius: 10px;
-    margin: 0.5rem 0;
-    border: 1px solid #FF8100;
+    border-radius: 12px;
+    margin: 1rem 0;
+    border: 1px solid var(--accent-orange);
+    transition: all 0.3s ease;
 }
 
-[data-baseweb="select"] {
-    background-color: #1A232C;
-    color: #FFFFFF;
-    border: 1px solid #3EBDF4;
-    border-radius: 5px;
+/* Messages */
+.success-message {
+    background: linear-gradient(135deg,
+        var(--accent-green) 0%,
+        var(--accent-blue) 100%
+    );
+    color: var(--text-primary);
+    padding: 1.25rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
+}
+
+.warning-message {
+    background: #0F172A;
+    color: var(--text-primary);
+    padding: 1.25rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.1);
+}
+
+/* Select boxes */
+[data-baseweb="select"],
+.stSelectbox > div > div {
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--accent-blue);
+    border-radius: 8px;
+}
+
+/* Progress bars */
+div[data-testid="stProgressBar"] {
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 div[data-testid="stProgressBar"] > div {
-    background: linear-gradient(to right, #FF8100, #00E153, #3EBDF4);
+    background: linear-gradient(135deg,
+        var(--accent-orange) 0%,
+        var(--accent-green) 50%,
+        var(--accent-blue) 100%
+    );
+}
+
+/* Images */
+[data-testid="stImage"] img {
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+[data-testid="stImage"] img:hover {
+    transform: scale(1.02);
+}
+
+/* DataFrames */
+[data-testid="stDataFrame"] {
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.stDataFrame th {
+    background-color: var(--primary-bg);
+    color: var(--text-primary);
+}
+
+.stDataFrame td {
+    color: var(--text-secondary);
+}
+
+/* Metrics */
+[data-testid="stMetricValue"] {
+    color: var(--accent-blue);
+    font-weight: 700;
+}
+
+[data-testid="stMetricDelta"] {
+    background-color: rgba(56, 189, 248, 0.1);
+    border-radius: 4px;
+    padding: 0.25rem 0.5rem;
+}
+
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--primary-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-blue);
 }
 </style>
 """
